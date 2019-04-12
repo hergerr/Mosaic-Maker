@@ -1,1 +1,1 @@
-http://127.0.0.1:5000/mozaika?losowo=Z&rozdzielczosc=XxY&zdjecia=URL1,URL2,URL3
+http://127.0.0.1:5000/mozaika?losowo=1&rozdzielczosc=1920x1080&zdjecia=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSofe5GJxpAvPK0WNNRYI481v_xSJdsLEnP7haH09P17EeHgnzjTA,https://www.snopes.com/tachyon/2015/06/shark-bait-dogs.jpg?resize=865,https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/13002253/GettyImages-521536928-_1_.jpg

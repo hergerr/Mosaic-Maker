@@ -1,0 +1,1 @@
+http://127.0.0.1:5000/mozaika?losowo=Z&rozdzielczosc=XxY&zdjecia=URL1,URL2,URL3

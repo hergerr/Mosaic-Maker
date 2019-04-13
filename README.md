@@ -15,4 +15,5 @@ http://adress/mozaika?losowo=Z&rozdzielczosc=XxY&zdjecia=URL1,URL2,URL3...
 1. pip install -r requirements.txt
 2. python3 app.py
 3. Type in URL
-4. Ctrl+F5 to see result on the page
+4. **Ctrl+F5 to see result on the page**
+

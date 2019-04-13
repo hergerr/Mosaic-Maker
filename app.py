@@ -1,6 +1,7 @@
 from flask import Flask, request, redirect, url_for, render_template
 from PIL import Image
 import requests
+import math
 from io import BytesIO
 
 app = Flask(__name__)
@@ -37,7 +38,7 @@ def make_mosaic():
 
 @app.route('/')
 def entry_page():
-    return redirect(url_for('mosaic'))
+    return redirect(url_for('make_mosaic'))
 
 
 def modify_images(pic_url_list, x_res, y_res):
@@ -73,8 +74,29 @@ def modify_images(pic_url_list, x_res, y_res):
             response = requests.get(pic)
             img = (Image.open(BytesIO(response.content)))
             img = img.resize((img_width, img_height))
-            mosaic.paste(img, ((counter % int(size/2))*img_width, int(counter/int(size/2))*img_height))
+            mosaic.paste(img, ((counter % int(size / 2)) * img_width, int(counter / int(size / 2)) * img_height))
             counter += 1
+
+    elif size == 5 or size == 7:
+        for pic in pic_url_list:
+            if counter < int((size / 2)):
+                img_width = int(x_res / int((size / 2)))
+                img_height = int(y_res / 2)
+
+                response = requests.get(pic)
+                img = (Image.open(BytesIO(response.content)))
+                img = img.resize((img_width, img_height))
+                mosaic.paste(img, ((counter % int(size / 2)) * img_width, 0))
+                counter += 1
+            else:
+                img_width = int(x_res / int(math.ceil(size / 2)))
+                img_height = int(y_res / 2)
+
+                response = requests.get(pic)
+                img = (Image.open(BytesIO(response.content)))
+                img = img.resize((img_width, img_height))
+                mosaic.paste(img, ((counter-(int((size / 2)))) * img_width, img_height))
+                counter += 1
 
     mosaic.show()
 

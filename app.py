@@ -1,8 +1,9 @@
 from flask import Flask, request, redirect, url_for, render_template
 from PIL import Image
+from io import BytesIO
+from random import shuffle
 import requests
 import math
-from io import BytesIO
 
 app = Flask(__name__)
 
@@ -27,29 +28,37 @@ def make_mosaic():
     if 'zdjecia' in request_arguments:
         pic_url_list = request_arguments['zdjecia'][0].split(',')
 
-    # check if optional argument (random) exists
+    # check if optional argument (random) exists, if so shuffle it
     if 'losowo' in request_arguments and request_arguments['losowo'][0] == '1':
-        map(set, pic_url_list)
+        shuffle(pic_url_list)
 
-    modify_images(pic_url_list, x_resolution, y_resolution)
+    # call function which glues images together
+    mosaic = modify_images(pic_url_list, x_resolution, y_resolution)
+    mosaic.save('static/img/mosaic', 'JPEG')
 
     return render_template('mosaic.html')
 
 
 @app.route('/')
 def entry_page():
+    """Redirects to make_mosaic adress"""
     return redirect(url_for('make_mosaic'))
 
 
 def modify_images(pic_url_list, x_res, y_res):
     """Function which gets images from urls and makes final mosaic image"""
-    pic_list = []
+
+    # counter which counts modified and pasted images
     counter = 0
     size = len(pic_url_list)
 
+    # creating empty image
     mosaic = Image.new("RGB", (x_res, y_res), "white")
 
+    # for different quantity of images there are different ways to schedule it on mosaic
     if size == 1:
+
+        # get image, resize it and paste it on mosaic
         response = requests.get(pic_url_list[0])
         img = (Image.open(BytesIO(response.content)))
         img = img.resize((x_res, y_res))
@@ -95,10 +104,10 @@ def modify_images(pic_url_list, x_res, y_res):
                 response = requests.get(pic)
                 img = (Image.open(BytesIO(response.content)))
                 img = img.resize((img_width, img_height))
-                mosaic.paste(img, ((counter-(int((size / 2)))) * img_width, img_height))
+                mosaic.paste(img, ((counter - (int((size / 2)))) * img_width, img_height))
                 counter += 1
 
-    mosaic.show()
+    return mosaic
 
 
 if __name__ == '__main__':

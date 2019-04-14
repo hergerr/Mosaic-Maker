@@ -41,7 +41,7 @@ def make_mosaic():
 
 @app.route('/')
 def entry_page():
-    """Redirects to make_mosaic adress"""
+    """Redirects to make_mosaic endpoint"""
     return redirect(url_for('make_mosaic'))
 
 
@@ -53,22 +53,15 @@ def modify_images(pic_url_list, x_res, y_res):
     size = len(pic_url_list)
 
     # creating empty image
-    mosaic = Image.new("RGB", (x_res, y_res), "white")
+    mosaic = Image.new('RGB', (x_res, y_res), 'white')
 
     # for different quantity of images there are different ways to schedule it on mosaic
-    if size == 1:
-
-        # get image, resize it and paste it on mosaic
-        response = requests.get(pic_url_list[0])
-        img = (Image.open(BytesIO(response.content)))
-        img = img.resize((x_res, y_res))
-        mosaic.paste(img)
-
-    elif size == 2 or size == 3:
+    if size == 1 or size == 2 or size == 3:
         for pic in pic_url_list:
             img_width = int(x_res / size)
             img_height = int(y_res)
 
+            # get image, resize it and paste it on mosaic
             response = requests.get(pic)
             img = (Image.open(BytesIO(response.content)))
             img = img.resize((img_width, img_height))

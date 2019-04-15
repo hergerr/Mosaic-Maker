@@ -37,7 +37,7 @@ def index():
     # call function which glues images together
     try:
         mosaic = make_mosaic(pic_url_list, x_resolution, y_resolution)
-        mosaic.save('static/img/mosaic', 'JPEG')
+        mosaic.save('static/img/mosaic.jpeg', 'JPEG')
         return render_template('mosaic.html')
     except ValueError as e:
         return render_template('mosaic.html', message=str(e))

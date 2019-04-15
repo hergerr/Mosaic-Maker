@@ -9,8 +9,8 @@ app = Flask(__name__)
 
 
 @app.route('/mozaika')
-def make_mosaic():
-    """This function deals with given url and returns template with mosaic"""
+def index():
+    """Deals with given url and returns template with mosaic"""
 
     # list with url for pictures
     pic_url_list = []
@@ -33,24 +33,32 @@ def make_mosaic():
         shuffle(pic_url_list)
 
     # call function which glues images together
-    mosaic = modify_images(pic_url_list, x_resolution, y_resolution)
-    mosaic.save('static/img/mosaic', 'JPEG')
-
-    return render_template('mosaic.html')
+    try:
+        mosaic = make_mosaic(pic_url_list, x_resolution, y_resolution)
+        mosaic.save('static/img/mosaic', 'JPEG')
+        return render_template('mosaic.html')
+    except ValueError as e:
+        return render_template('mosaic.html', message=str(e))
+    except requests.exceptions.ConnectionError:
+        return render_template('mosaic.html', message='Wrong image url passed or no internet access')
 
 
 @app.route('/')
 def entry_page():
     """Redirects to make_mosaic endpoint"""
-    return redirect(url_for('make_mosaic'))
+    return redirect(url_for('index'))
 
 
-def modify_images(pic_url_list, x_res, y_res):
-    """Function which gets images from urls and makes final mosaic image"""
+def make_mosaic(pic_url_list, x_res, y_res):
+    """Function which gets images from urls and makes final mosaic image.
+    Takes in list of from 1 to 8 images and resolution of output mosaic"""
 
     # counter which counts modified and pasted images
     counter = 0
     size = len(pic_url_list)
+
+    if size > 8:
+        raise ValueError('Too many pictures for mosaic')
 
     # creating empty image
     mosaic = Image.new('RGB', (x_res, y_res), 'white')

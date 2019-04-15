@@ -5,6 +5,10 @@
     <title>Mosaic</title>
 </head>
 <body>
-<img src="../static/img/mosaic" alt="generated mosaic">
+{% if message %}
+    <h3>{{ message }}</h3>
+{% else %}
+    <img src="../static/img/mosaic" alt="generated mosaic">
+{% endif %}
 </body>
 </html>

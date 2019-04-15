@@ -4,8 +4,10 @@ from io import BytesIO
 from random import shuffle
 import requests
 import math
+import os
 
 app = Flask(__name__)
+basepath = os.path.abspath('.')
 
 
 @app.route('/mozaika')
@@ -37,7 +39,7 @@ def index():
     # call function which glues images together
     try:
         mosaic = make_mosaic(pic_url_list, x_resolution, y_resolution)
-        mosaic.save('static/img/mosaic.jpeg', 'JPEG')
+        mosaic.save(basepath + '/static/img/mosaic.jpeg', 'JPEG')
         return render_template('mosaic.html')
     except ValueError as e:
         return render_template('mosaic.html', message=str(e))

@@ -4,6 +4,8 @@ Mosaic Maker is an application which generates mosaic of images. The parameters 
 
 http://adress/mozaika?losowo=Z&rozdzielczosc=XxY&zdjecia=URL1,URL2,URL3...
 
+Examples are in sample_urls.txt file
+
 ### Parameters:
 
 - *losowo* - optional parameter. 1 means that order of pictures should be random

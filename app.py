@@ -19,8 +19,10 @@ def index():
     x_resolution = 2048
     y_resolution = 2048
 
+    # converting flask type od dict to default python dict
     request_arguments = request.args.to_dict(flat=False)
-    # check if option argument (resolution) exists
+
+    # check if optional  argument (resolution) exists
     if 'rozdzielczosc' in request_arguments:
         # splitting x and y resolution values by 'x' and mapping it on int
         x_resolution, y_resolution = map(int, request_arguments['rozdzielczosc'][0].split('x'))
@@ -51,7 +53,8 @@ def entry_page():
 
 def make_mosaic(pic_url_list, x_res, y_res):
     """Function which gets images from urls and makes final mosaic image.
-    Takes in list of from 1 to 8 images and resolution of output mosaic"""
+    Takes in list of from 1 to 8 images and resolution of output mosaic
+    If there is no urls in list generates empty white picture with given size"""
 
     # counter which counts modified and pasted images
     counter = 0
